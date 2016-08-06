@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="Samples.CaliburnMicroIntegration.Demos.DialogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:local="clr-namespace:Samples.CaliburnMicroIntegration"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             xmlns:IconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Dialog:CustomDialog x:Key="CustomDialog" x:Name="CustomDialog"
+                             Title="Custom Dialog"
+                             cal:Bind.Model="Samples.CaliburnMicroIntegration.Demos.CustomDialogViewModel">
+            <GroupBox Header="{Binding DisplayName}">
+                <StackPanel Orientation="Vertical">
+                    <DockPanel LastChildFill="True">
+                        <Button x:Name="CancelChanges" 
+                                HorizontalAlignment="Right"
+                                cal:Message.Attach="CancelChanges"
+                                ToolTip="Cancel"
+                                DockPanel.Dock="Right" 
+                                Width="30" Height="30"  
+                                Style="{DynamicResource MetroCircleButtonStyle}">
+                            <IconPacks:PackIconModern Kind="Cancel" Width="12" Height="12" />
+                        </Button>
+                        <Button x:Name="AcceptChanges" 
+                                HorizontalAlignment="Right"
+                                cal:Message.Attach="AcceptChanges"
+                                ToolTip="Ok"
+                                DockPanel.Dock="Right" 
+                                Width="30" Height="30"  
+                                Style="{DynamicResource MetroCircleButtonStyle}">
+                            <IconPacks:PackIconModern Kind="Check" Width="12" Height="12" />
+                        </Button>
+                        <TextBox x:Name="CustomDialogInfo" Text="{Binding Info}" Controls:TextBoxHelper.Watermark="Enter some text." />
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+        </Dialog:CustomDialog>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+            <Button x:Name="ShowMessage" Content="Show Message"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    Style="{DynamicResource SquareButtonStyle}" />
+
+            <Button x:Name="GetInput" Content="Get Input"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    Style="{DynamicResource SquareButtonStyle}" />
+
+            <Button x:Name="ShowLogin" Content="Login"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    Style="{DynamicResource SquareButtonStyle}" />
+
+            <Button x:Name="ShowProgress" Content="Show Progress"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    Style="{DynamicResource SquareButtonStyle}" />
+            
+            <Button x:Name="ShowCustom" Content="Show Custom"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    Style="{DynamicResource SquareButtonStyle}" />
+        </StackPanel>
+        <TextBlock x:Name="Info"
+                   Grid.Column="1"
+                   Margin="10"/>
+    </Grid>
+</UserControl>
