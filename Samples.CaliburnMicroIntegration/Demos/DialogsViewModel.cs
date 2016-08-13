@@ -28,6 +28,8 @@ namespace Samples.CaliburnMicroIntegration.Demos
             }
         }
 
+        private IResult Wait => Task.Delay(1000).AsResult();
+
         public IEnumerable<IResult> ShowMessage()
         {
             var message = new MetroMessage("MetroMessage", "Hello from DialogsViewModel.");
@@ -69,7 +71,7 @@ namespace Samples.CaliburnMicroIntegration.Demos
             do
             {
                 Info += "Processing...";
-                yield return Task.Delay(1000).AsResult();
+                yield return Wait;
 
                 if (controller.IsCanceled)
                 {
