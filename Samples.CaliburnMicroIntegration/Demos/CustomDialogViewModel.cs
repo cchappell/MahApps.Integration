@@ -40,10 +40,7 @@ namespace Samples.CaliburnMicroIntegration.Demos
             }
         }
 
-        public bool CanAcceptChanges
-        {
-            get { return hasChanges; }
-        }
+        public bool CanAcceptChanges => HasChanges;
 
         protected override void OnActivate()
         {
@@ -52,10 +49,7 @@ namespace Samples.CaliburnMicroIntegration.Demos
             Console.WriteLine($"{GetType().Name} activated.");
         }
 
-        public IResult AcceptChanges()
-        {
-            return new CloseDialog();
-        }
+        public IResult AcceptChanges() => new CloseDialog();
 
         public IEnumerable<IResult> CancelChanges()
         {

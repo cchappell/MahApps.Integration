@@ -11,7 +11,7 @@ namespace MahApps.Integration.Caliburn.Micro
     /// </summary>
     public class Transition : ResultBase
     {
-        private readonly string template;
+        private readonly Action<CoroutineExecutionContext> execute;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Transition"/> class.
@@ -19,27 +19,36 @@ namespace MahApps.Integration.Caliburn.Micro
         /// <param name="template">The template.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="template"/> is <c>null</c>.
-        /// </exception>Components for integrating MahApps with applicatio
+        /// </exception>
         public Transition(string template)
         {
-            if (template == null)
-            {
-                throw new ArgumentNullException("template");
-            }
+            if (template == null) throw new ArgumentNullException(nameof(template));
 
-            this.template = template;
+            execute = context => Execute(template, context);
         }
 
         /// <summary>
-        /// Gets the template.
+        /// Initializes a new instance of the <see cref="Transition"/> class.
         /// </summary>
-        public string Template
+        /// <param name="model">The model.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="model"/> is <c>null</c>
+        /// </exception>
+        public Transition(object model)
         {
-            get { return template; }
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
+            execute = context => Execute(model, context);
         }
 
         /// <inheritdoc />
         public override void Execute(CoroutineExecutionContext context)
+        {
+            execute(context);
+            OnCompleted();
+        }
+
+        private void Execute(string template, CoroutineExecutionContext context)
         {
             var control = context.Source as TransitioningContentControl;
             if (control != null)
@@ -50,8 +59,22 @@ namespace MahApps.Integration.Caliburn.Micro
                     control.Content = new ContentControl { ContentTemplate = dataTemplate, Content = context.Target };
                 }
             }
+        }
 
-            OnCompleted();
+        private void Execute(object model, CoroutineExecutionContext context)
+        {
+            var control = context.Source as TransitioningContentControl;
+            if (control != null)
+            {
+                var currentView = control.Content as FrameworkElement;
+                var currentModel = currentView?.DataContext;
+                ScreenExtensions.TryDeactivate(currentModel, true);
+
+                var view = ViewLocator.LocateForModel(model, null, null);
+                control.Content = view;
+                ViewModelBinder.Bind(model, view, context.Target);
+                ScreenExtensions.TryActivate(model);
+            }
         }
     }
 }

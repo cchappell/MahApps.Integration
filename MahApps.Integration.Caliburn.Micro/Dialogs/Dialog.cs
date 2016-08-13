@@ -29,10 +29,7 @@ namespace MahApps.Integration.Caliburn.Micro.Dialogs
         public string Name { get; }
 
         /// <inheritdoc />
-        protected override bool RequiresManualClose
-        {
-            get { return true; }
-        }
+        protected override bool RequiresManualClose => true;
 
         /// <inheritdoc />
         protected async override Task ShowWindow(MetroWindow window, CoroutineExecutionContext context)

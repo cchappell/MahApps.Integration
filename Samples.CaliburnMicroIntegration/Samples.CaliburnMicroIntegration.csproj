@@ -86,6 +86,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Demos\Transition1View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Demos\Transition2View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Demos\TransitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,6 +113,16 @@
     </Compile>
     <Compile Include="Demos\DialogsViewModel.cs" />
     <Compile Include="Demos\IDemo.cs" />
+    <Compile Include="Demos\Transition1View.xaml.cs">
+      <DependentUpon>Transition1View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Demos\Transition2View.xaml.cs">
+      <DependentUpon>Transition2View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Demos\TransitionView.xaml.cs">
+      <DependentUpon>TransitionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Demos\TransitionViewModel.cs" />
     <Compile Include="ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
       <SubType>Code</SubType>
