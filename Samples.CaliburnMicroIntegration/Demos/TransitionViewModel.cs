@@ -8,9 +8,12 @@ namespace Samples.CaliburnMicroIntegration.Demos
 {
     public class TransitionViewModel : Screen, IDemo
     {
+        private readonly IEnumerator<IResult> manualTransitions;
+
         public TransitionViewModel()
         {
             DisplayName = "transitions";
+            manualTransitions = ManualTransitions.GetEnumerator();
         }
 
         public DateTime Now => DateTime.Now;
@@ -37,6 +40,25 @@ namespace Samples.CaliburnMicroIntegration.Demos
                 yield return new Transition(new Transition2ViewModel());
                 yield return Wait;
             }
+        }
+
+        private IEnumerable<IResult> ManualTransitions
+        {
+            get
+            {
+                while (true)
+                {
+                    yield return new Transition("DateTimeTemplate1");
+                    yield return new Transition("DateTimeTemplate2");
+                    yield return new Transition("DateTimeTemplate3");
+                }
+            }
+        }
+
+        public IResult NextTransition()
+        {
+            manualTransitions.MoveNext();
+            return manualTransitions.Current;
         }
 
         private IResult Wait => Task.Delay(TimeSpan.FromSeconds(1)).AsResult();

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Samples.CaliburnMicroIntegration.Demos"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:mahMicro="http://metro.mahapps.caliburn.micro.com/winfx"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -29,6 +30,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -42,6 +44,14 @@
             <Controls:TransitioningContentControl cal:Message.Attach="[Event Loaded] = [Action NextUserControl]" Transition="Down">
                 
             </Controls:TransitioningContentControl>
+        </GroupBox>
+        <GroupBox Header="Data Template On Separate Target" Grid.Row="2">
+            <StackPanel Orientation="Vertical">
+                <Button x:Name="NextTransition" Content="Transition" Width="100" mahMicro:Transition.Target="{Binding ElementName=SeparateTarget}" />
+                <Controls:TransitioningContentControl x:Name="SeparateTarget" Transition="RightReplace">
+                    
+                </Controls:TransitioningContentControl>
+            </StackPanel>
         </GroupBox>
     </Grid>
 </UserControl>

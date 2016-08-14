@@ -11,6 +11,28 @@ namespace MahApps.Integration.Caliburn.Micro
     /// </summary>
     public class Transition : ResultBase
     {
+        private static readonly ILog Log = LogManager.GetLog(typeof(Transition));
+
+        /// <summary>
+        /// Identifies the Target attached property.
+        /// </summary>
+        public static readonly DependencyProperty TargetProperty =
+            DependencyProperty.RegisterAttached("Target", typeof(TransitioningContentControl), typeof(Transition), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets the target.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>The target</returns>
+        public static TransitioningContentControl GetTarget(DependencyObject obj) => (TransitioningContentControl)obj.GetValue(TargetProperty);
+
+        /// <summary>
+        /// Sets the target.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="value">The value.</param>
+        public static void SetTarget(DependencyObject obj, TransitioningContentControl value) => obj.SetValue(TargetProperty, value);
+
         private readonly Action<CoroutineExecutionContext> execute;
 
         /// <summary>
@@ -50,7 +72,7 @@ namespace MahApps.Integration.Caliburn.Micro
 
         private void Execute(string template, CoroutineExecutionContext context)
         {
-            var control = context.Source as TransitioningContentControl;
+            var control = FindControl(context);
             if (control != null)
             {
                 var dataTemplate = control.TryFindResource(template) as DataTemplate;
@@ -63,7 +85,7 @@ namespace MahApps.Integration.Caliburn.Micro
 
         private void Execute(object model, CoroutineExecutionContext context)
         {
-            var control = context.Source as TransitioningContentControl;
+            var control = FindControl(context);
             if (control != null)
             {
                 var currentView = control.Content as FrameworkElement;
@@ -75,6 +97,29 @@ namespace MahApps.Integration.Caliburn.Micro
                 ViewModelBinder.Bind(model, view, context.Target);
                 ScreenExtensions.TryActivate(model);
             }
+        }
+
+        private TransitioningContentControl FindControl(CoroutineExecutionContext context)
+        {
+            var source = context.Source;
+
+            var control = source as TransitioningContentControl;
+            if (control == null)
+            {
+                var obj = source as DependencyObject;
+                if (obj != null)
+                {
+                    control = GetTarget(obj);
+                }
+            }
+
+            if (control == null)
+            {
+                Log.Warn($"Transition: Unable to find target TransitioningContentControl. Use the Target attached property on " +
+                    $"the element that triggered the Transition to provide the target. Source: {context.Source}");
+            }
+
+            return control;
         }
     }
 }
