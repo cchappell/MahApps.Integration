@@ -243,3 +243,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/MahApps.Integration.Caliburn.Micro/publish.cmd
